@@ -29,7 +29,7 @@ export class AppService {
   }
 
   /**
-   * This method will provide an authentication token for the given user
+   * Provide an authentication token for the given user
    * @returns {Promise<string>}
    */
   private async getAuthToken(): Promise<string> {
@@ -55,6 +55,7 @@ export class AppService {
   /**
    * Test a simple get/:id and get request
    * on service A and save the data on mongo
+   * @returns {Promise<void>}
    */
   async getFlowTest(): Promise<void> {
     let path = '/items?limit=20&offset=0';
@@ -107,6 +108,11 @@ export class AppService {
     }
   }
 
+  /**
+   * Test a simple insert, update and delete
+   * flow on service A
+   * @param {number} retry the current number of retry if service A response is 401
+   */
   async insertFlowTest(retry: number = 0): Promise<void> {
     if (retry > 3) {
       throw new InternalServerErrorException('To many retry to service A');
