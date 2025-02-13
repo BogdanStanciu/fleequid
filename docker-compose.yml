@@ -1,0 +1,54 @@
+services:
+  serviceA:
+    build:
+      context: ./serviceA
+      dockerfile: Dockerfile
+    image: service-a:latest
+    env_file:
+      - ./serviceA/.env
+    depends_on:
+      - mongodb
+    ports:
+      - 3000:3000
+    restart: always
+    networks:
+      local_network:
+        aliases:
+          - serviceA
+
+  serviceB:
+    build:
+      context: ./serviceB
+      dockerfile: Dockerfile
+    image: service-b:latest
+    env_file:
+      - ./serviceB/.env
+    depends_on:
+      - serviceA
+      - redis
+    ports:
+      - 4000:4000
+    restart: always
+    networks:
+      local_network:
+        aliases:
+          - serviceB
+
+  redis:
+    image: redis
+    restart: always
+    networks:
+      local_network:
+        aliases:
+          - redis
+
+  mongodb:
+    image: mongo
+    restart: always
+    networks:
+      local_network:
+        aliases:
+          - mongo
+
+networks:
+  local_network:
